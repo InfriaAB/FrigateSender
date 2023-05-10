@@ -4,5 +4,6 @@ Send notifications and video from Frigate based on MQTT events, without needing 
 # Requirements
 
 - ffmpeg
-- python3 -m pip install paho-mqtt --upgrade
-- python3 -m pip install python-telegram-bot --upgrade
+- python -m pip install requests --upgrade
+- python -m pip install paho-mqtt --upgrade
+- python -m pip install python-telegram-bot --upgrade
