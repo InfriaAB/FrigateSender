@@ -28,18 +28,6 @@ class SimpleNVR:
 
         self.connectToMQTT()
 
-        tempSnapshotPath = os.path.realpath("test.mp4")
-        fileNameOfSource = Path(tempSnapshotPath)
-        splitFileNameStart = str(fileNameOfSource.with_suffix('')) + "_split_"
-        splitFileNameComplete = splitFileNameStart + "%03d.mp4"
-
-        Logger.Debug(fileNameOfSource)
-        Logger.Debug(splitFileNameComplete)
-
-        # splitCommand = f'{self.FFMPEGPath} -i "{tempSnapshotPath}" -c copy -map 0 -segment_time 00:00:{20} -f segment -reset_timestamps 1 -movflags +faststart "{splitFileNameComplete}"'
-        # Logger.Debug(splitCommand)
-        # os.system(splitCommand)
-
     def connectToMQTT(self):
         self.Logger.Info("MQTT: Connecting.")
 
