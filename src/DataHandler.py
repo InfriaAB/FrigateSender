@@ -1,12 +1,10 @@
-import os, sys, traceback, math, subprocess, configparser, time
-import requests
-#import ssl
+from TelegramConnection import TelegramConnection
+
+import os, sys, traceback, math, subprocess, configparser, time, requests
 from pathlib import Path
 from datetime import datetime, timedelta
-from TelegramConnection import TelegramConnection
-#from subprocess import check_call
 
-class NVRSender:
+class DataHandler:
     def __init__(self, Logger):
         self.Logger = Logger
         
@@ -44,7 +42,7 @@ class NVRSender:
                 self.Logger.Debug("To many sent, sleeping for " + str(self.RateLimitTimeout) + " seconds.")
                 time.sleep(int(self.RateLimitTimeout))
             
-        #nothings been sent for a while, go for for it.
+        # Nothing has been sent for a while, go for for it.
         self.Logger.Debug("Nothings been sent for a while, send it.")
         self.LastSendDate = datetime.now()
         self.LastSendCount = 1
@@ -81,7 +79,7 @@ class NVRSender:
                     f.write(resp.content)
                 
             except Exception as e:
-                self.Logger.Error("NVRHandleSend.HandleVideo() crashed.", e)
+                self.Logger.Error("DataHandler.HandleVideo() crashed.", e)
                 self.Logger.Info(self.format_stacktrace())
 
             size = self.GetFileSize(tempVideoPath)
@@ -148,7 +146,7 @@ class NVRSender:
             return secondsLong
             
         except Exception as e:
-            self.Logger.Error("NVRHandleSend.GetVideoLength() crashed.", e)
+            self.Logger.Error("DataHandler.GetVideoLength() crashed.", e)
             self.Logger.Info(self.format_stacktrace())
 
             # if we crashed on reading length of video, approximate by taking 0.75 Mb = 1 second
