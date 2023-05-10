@@ -71,7 +71,8 @@ class DataHandler:
 
         attempts = 0
         size = 0
-        while (attempts <= 3 and size < 5):
+        
+        while (attempts <= 4 and size < 10): # if video size is less than 10 megabytes, its probably not all written yet.
             time.sleep(1 + (attempts * attempts)) # exponential backoff
             try:
                 with open(tempVideoPath, 'wb') as f:
