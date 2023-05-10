@@ -1,5 +1,5 @@
 from subprocess import check_call
-from pathlib import Path
+#from pathlib import Path
 import time, traceback, sys, atexit, os
 import json
 import asyncio
@@ -7,11 +7,11 @@ import threading
 import configparser
 from subprocess import check_output, Popen, PIPE
 from datetime import datetime, timedelta
-import logging
-from logging.handlers import TimedRotatingFileHandler
-from NVRHandleSend import NVRSender
-from NVRLogger import Logger
-from NVRTelegramConnection import TelegramConnection
+#import logging
+#from logging.handlers import TimedRotatingFileHandler
+from DataHandler import NVRSender
+from Logger import Logger
+from TelegramConnection import TelegramConnection
 import paho.mqtt.client as mqtt
 
 class SimpleNVR:

@@ -1,10 +1,10 @@
-import os, sys, traceback, uuid, math, subprocess, configparser, time
+import os, sys, traceback, math, subprocess, configparser, time
 import requests
-import ssl
+#import ssl
 from pathlib import Path
 from datetime import datetime, timedelta
-from NVRTelegramConnection import TelegramConnection
-from subprocess import check_call
+from TelegramConnection import TelegramConnection
+#from subprocess import check_call
 
 class NVRSender:
     def __init__(self, Logger):
@@ -22,11 +22,7 @@ class NVRSender:
         self.RateLimit = int(self.Config.get("Main", "RateLimit"))
         self.RateLimitTimeout = int(self.Config.get("Main", "RateLimitTimeout"))
         self.FileMaxSize = int(self.Config.get("Main", "FileSizeMaxPerSend"))
-
-        self.SSLCert = ssl.create_default_context()
-        self.SSLCert.check_hostname = False
-        self.SSLCert.verify_mode = ssl.CERT_NONE
-    
+            
     async def setup(self):
         self.Messaging = TelegramConnection(self.Logger)
         await self.Messaging.setup()

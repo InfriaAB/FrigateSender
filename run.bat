@@ -1,1 +1,1 @@
-python NVRToolMain.py
+python src/Main.py
