@@ -3,7 +3,7 @@ from Logger import Logger
 from TelegramConnection import TelegramConnection
 import Helpers
 
-import time, atexit, os, json, asyncio, configparser, asyncio
+import time, atexit, os, json, asyncio, configparser, asyncio, datetime
 import paho.mqtt.client as mqtt
 
 class FrigateSender:
@@ -128,11 +128,14 @@ class FrigateSender:
         self.Logger.Info(snapShotUrl)
         self.Logger.Info(videoUrl)
 
+        dateTimeText = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
         # send snapshots on new events    ### and when event is over (best snapshot is chosen by Frigate to represent event).
+        
+        # send picture right away on new events to get them out as fast as possible.
         try:
             if(eventType == "new"): #or eventType == "end"
                 self.Logger.Info("Sending snapshot")
-                messageTextSnapshot = "Id: " + str(eventId) + ", " + str(cameraName) + ", " + str(objectType) + ", score: " + str(score) + "."
+                messageTextSnapshot = dateTimeText + ", id: " + str(eventId) + ", " + str(cameraName) + ", " + str(objectType) + ", score: " + str(score) + "."
                 await self.Sender.HandlePicture(snapShotUrl, messageTextSnapshot)
 
         except Exception as e:
@@ -140,8 +143,8 @@ class FrigateSender:
             self.Logger.Error("Crashed in HandleEvent.", e)
             self.Logger.Info(Helpers.format_stacktrace())
 
+        # send out videos only after event ends so whole event is recorded.
         try:
-
             # only send video on end event
             if(eventType == "end"):
                 self.Logger.Info("Sending video")

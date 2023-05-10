@@ -71,8 +71,8 @@ class DataHandler:
 
         attempts = 0
         size = 0
-        while (attempts < 3 and size < 5):
-            time.sleep(1)
+        while (attempts <= 3 and size < 5):
+            time.sleep(1 + (attempts * attempts)) # exponential backoff
             try:
                 with open(tempVideoPath, 'wb') as f:
                     resp = requests.get(url, verify=False)
