@@ -45,8 +45,12 @@ class FrigateSender:
         self.Logger.Info("MQTT: Disconnected, code = "+str(rc))
 
         self.MQTTConnected = False
-        if(rc == 16): # malformed package. Try again.
-            self.connectToMQTT()
+        #if(rc == 16): # malformed package. Try again.
+        
+        # just try to connect again.
+        self.connectToMQTT()
+            
+        
 
     # The callback for when the client receives a CONNACK response from the server.
     def on_connect(self, client, userdata, flags, rc):
@@ -135,7 +139,8 @@ class FrigateSender:
         try:
             if(eventType == "new"): #or eventType == "end"
                 self.Logger.Info("Sending snapshot")
-                messageTextSnapshot = dateTimeText + ", id: " + str(eventId) + ", " + str(cameraName) + ", " + str(objectType) + ", score: " + str(score) + "."
+                # messageTextSnapshot = dateTimeText + ", id: " + str(eventId) + ", " + str(cameraName) + ", " + str(objectType) + ", score: " + str(score) + "."
+                messageTextSnapshot = str(objectType).capitalize() + " in "  + str(cameraName) + ", s: " + str(score) + ", " + dateTimeText + ", id: " + str(eventId) + "."
                 self.Logger.Info(messageTextSnapshot)
                 await self.Sender.HandlePicture(snapShotUrl, messageTextSnapshot)
 
