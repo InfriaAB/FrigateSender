@@ -69,7 +69,11 @@ class NVRSender:
         await self.Messaging.SendPhoto(tempSnapshotPath, messageText)
         
     async def HandleVideo(self, url, messageText):   
-
+        
+        # slow self down a bit since Frigate seems to not have video fully 
+        # saved sometimes resulting in only partial video being downloaded.
+        time.sleep(1)
+        
         self.SendThrottle()
 
         tempVideoName = os.path.join("temp", "tempVideo.mp4")
