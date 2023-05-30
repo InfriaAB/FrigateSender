@@ -1,6 +1,4 @@
-import os, sys
-import configparser
-import logging
+import os, sys, configparser, logging
 from pathlib import Path
 from logging.handlers import TimedRotatingFileHandler
 
@@ -41,7 +39,6 @@ class Logger:
 
         self.Info("--- START ---")
         self.Info("Log level set to: " + logLevel)
-        #self.Logger.handlers[0].doRollover()
 
     def Debug(self, text):
         self.Logger.debug(text)
@@ -50,7 +47,6 @@ class Logger:
         self.Logger.info(text)
 
     def Error(self, text, exception):
-        #message = ("Log: " + text + os.linesep + "Exception: " + str(exception) + ".")
         self.Logger.warn(text)
         self.Logger.error(exception)
         

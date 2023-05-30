@@ -1,12 +1,10 @@
-import os, sys, traceback, uuid, math, subprocess, configparser, time
-import requests
-import ssl
+from TelegramConnection import TelegramConnection
+
+import os, sys, traceback, math, subprocess, configparser, time, requests
 from pathlib import Path
 from datetime import datetime, timedelta
-from NVRTelegramConnection import TelegramConnection
-from subprocess import check_call
 
-class NVRSender:
+class DataHandler:
     def __init__(self, Logger):
         self.Logger = Logger
         
@@ -22,11 +20,7 @@ class NVRSender:
         self.RateLimit = int(self.Config.get("Main", "RateLimit"))
         self.RateLimitTimeout = int(self.Config.get("Main", "RateLimitTimeout"))
         self.FileMaxSize = int(self.Config.get("Main", "FileSizeMaxPerSend"))
-
-        self.SSLCert = ssl.create_default_context()
-        self.SSLCert.check_hostname = False
-        self.SSLCert.verify_mode = ssl.CERT_NONE
-    
+            
     async def setup(self):
         self.Messaging = TelegramConnection(self.Logger)
         await self.Messaging.setup()
@@ -48,7 +42,7 @@ class NVRSender:
                 self.Logger.Debug("To many sent, sleeping for " + str(self.RateLimitTimeout) + " seconds.")
                 time.sleep(int(self.RateLimitTimeout))
             
-        #nothings been sent for a while, go for for it.
+        # Nothing has been sent for a while, go for for it.
         self.Logger.Debug("Nothings been sent for a while, send it.")
         self.LastSendDate = datetime.now()
         self.LastSendCount = 1
@@ -81,15 +75,16 @@ class NVRSender:
 
         attempts = 0
         size = 0
-        while (attempts < 3 and size < 5):
-            time.sleep(1)
+        
+        while (attempts <= 4 and size < 10): # if video size is less than 10 megabytes, its probably not all written yet.
+            time.sleep(3 + (attempts * attempts)) # exponential backoff
             try:
                 with open(tempVideoPath, 'wb') as f:
                     resp = requests.get(url, verify=False)
                     f.write(resp.content)
                 
             except Exception as e:
-                self.Logger.Error("NVRHandleSend.HandleVideo() crashed.", e)
+                self.Logger.Error("DataHandler.HandleVideo() crashed.", e)
                 self.Logger.Info(self.format_stacktrace())
 
             size = self.GetFileSize(tempVideoPath)
@@ -156,7 +151,7 @@ class NVRSender:
             return secondsLong
             
         except Exception as e:
-            self.Logger.Error("NVRHandleSend.GetVideoLength() crashed.", e)
+            self.Logger.Error("DataHandler.GetVideoLength() crashed.", e)
             self.Logger.Info(self.format_stacktrace())
 
             # if we crashed on reading length of video, approximate by taking 0.75 Mb = 1 second
