@@ -20,8 +20,10 @@ namespace FrigateSender
             using (var mqttClient = new MQTTClient(config, eventQue, Log.Logger, _ct.Token))
             {
                 await mqttClient.Start(_ct.Token);
-
+                
                 var messageHandler = new MessageHandler(eventQue, config, Log.Logger);
+                await messageHandler.Start(_ct.Token);
+
                 while (_ct.IsCancellationRequested == false)
                 {
                     await Task.Delay(100, _ct.Token);
