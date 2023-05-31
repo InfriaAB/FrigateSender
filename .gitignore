@@ -166,3 +166,6 @@ cython_debug/
 /v2/FrigateSender/obj
 /v2/FrigateSender.Tests/bin/Debug/net7.0
 /v2/FrigateSender.Tests/obj
+/v2/.vs/FrigateSender/v17/TestStore/0
+/v2/.vs/FrigateSender
+/v2/FrigateSender/.vs/ProjectEvaluation
