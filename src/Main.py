@@ -1,5 +1,6 @@
 from DataHandler import DataHandler
-from Logger import Logger
+from models.EventMessage import EventMessage
+from Common.Logger import Logger
 from TelegramConnection import TelegramConnection
 import Helpers
 
@@ -78,42 +79,7 @@ class FrigateSender:
         self.Logger.Info("New message on topic: " + str(msg.topic))
 
         try:
-            eventId = ""
-            eventType = ""
-            cameraName = ""
-            objectType = ""
-            score = 0.0
-            hasClip = False
-            hasSnapshot = False
-
-            data = json.loads(msg.payload)
-            if "after" in data:
-                self.Logger.Info("after is")
-                if "id" in data["after"]:
-                    eventId = data["after"]["id"]
-                    self.Logger.Info(eventId)
-
-                if "camera" in data["after"]:
-                    cameraName = data["after"]["camera"]
-                if "label" in data["after"]:
-                    objectType = data["after"]["label"]
-                if "score" in data["after"]:
-                    score = round(float(data["after"]["score"]) * 100)
-                if "has_clip" in data["after"]:
-                    hasClip = data["after"]["has_clip"]                  
-                if "has_snapshot" in data["after"]:
-                    hasSnapshot = data["after"]["has_snapshot"]     
-                if "type" in data:
-                    eventType = data["type"]     
-            
-                self.Logger.Info(eventId + ", "+ eventType + ", " + cameraName + ", "+ objectType + ", "+ str(score) + ", "+ str(hasClip) + ", "+ str(hasSnapshot))
-                self.Logger.Info(data)
-                
-                if(len(eventId) > 0):
-                    Helpers.run_async(self.HandleEvent(eventId, eventType, cameraName, objectType, score, hasClip, hasSnapshot))
-
-                else:
-                    self.Logger.Info("No event id from event")
+            event = new EventMessage
                     
         except Exception as e: 
             self.Logger.Info(msg.payload)
