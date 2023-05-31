@@ -1,10 +1,5 @@
 ﻿using FrigateSender.Models;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace FrigateSender.Common
 {
@@ -12,15 +7,27 @@ namespace FrigateSender.Common
     {
         private readonly object _lockObject = new object();
         private readonly List<EventData> _events = new List<EventData>();
+        private ILogger _logger;
+
+        public EventQue(ILogger logger)
+        {
+            _logger = logger;
+        }
 
         public void Add(EventData eventData)
         {
+            // only care about new and end as they are snapshots and videos
             if (eventData.EventType != EventType.Update)
             {
                 lock (_lockObject)
                 {
                     _events.Add(eventData);
                 }
+                _logger.Information("Event qued, Is of type: " + eventData.EventType);
+            }
+            else
+            {
+                _logger.Information("Skipping event. Is of type: " + eventData.EventType);
             }
         }
 

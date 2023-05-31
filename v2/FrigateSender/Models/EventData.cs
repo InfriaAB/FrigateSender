@@ -37,10 +37,9 @@ namespace FrigateSender.Models
 
         public EventData(string payloadString, ILogger logger)
         {
-            this.payloadString = payloadString;
             _logger = logger;
-            logger.Information(payloadString);
-
+            this.payloadString = payloadString;
+            
             var jsonObject = System.Text.Json.JsonDocument.Parse(payloadString);
 
             ReceivedDate = DateTime.Now;

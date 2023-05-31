@@ -32,11 +32,21 @@ namespace FrigateSender
             _MQTTClient.ApplicationMessageReceivedAsync += e =>
             {
                 _logger.Information($"Event received.");
+
                 var payload = e.ApplicationMessage.PayloadSegment;
                 var payloadByteArray = payload.ToArray();
                 string payloadString = Encoding.UTF8.GetString(payloadByteArray, 0, payloadByteArray.Length);
+                try
+                {
+                    logger.Information(payloadString);
+                    var eventData = new EventData(payloadString, _logger);
+                    eventQue.Add(eventData);
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex, $"Failed to add event.");
+                }
 
-                eventQue.Add(new EventData(payloadString, _logger));
                 return Task.CompletedTask;
             };
 
