@@ -36,7 +36,7 @@
         /// <summary>
         /// Where to store log files.
         /// </summary>
-        public string LoggingPath { get; set; } = "logs/MiniNVR.log";
+        public string LoggingPath { get; set; } = "logs";
 
         /// <summary>
         /// What level of logging to do.
@@ -69,6 +69,11 @@
         /// MQTT Password
         /// </summary>
         public string MQTTPassword { get; set; } = "password";
+
+        /// <summary>
+        /// MQTT Topic for Frigate events.
+        /// </summary>
+        public string MQTTTopic { get; set; } = "frigate/events";
 
         /// <summary>
         /// Telegram Chat bot token

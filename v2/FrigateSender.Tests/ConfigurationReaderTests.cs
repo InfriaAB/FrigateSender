@@ -2,7 +2,7 @@ using FrigateSender.Common;
 
 namespace FrigateSender.Tests
 {
-    public class Tests
+    public class ConfigurationReaderTests
     {
         [SetUp]
         public void Setup()
