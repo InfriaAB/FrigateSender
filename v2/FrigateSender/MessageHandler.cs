@@ -19,7 +19,7 @@ namespace FrigateSender
 
         public async Task Work(CancellationToken token)
         {
-            _logger.Information("work.");
+            //_logger.Information("work.");
         }
     }
 }

@@ -15,9 +15,12 @@ namespace FrigateSender.Common
 
         public void Add(EventData eventData)
         {
-            lock (_lockObject)
+            if (eventData.EventType != EventType.Update)
             {
-                _events.Add(eventData);
+                lock (_lockObject)
+                {
+                    _events.Add(eventData);
+                }
             }
         }
 
@@ -31,7 +34,7 @@ namespace FrigateSender.Common
             // get snapshots first before video.
             lock (_lockObject) {
                 var oldestSnapshot = _events
-                    .Where(e => e.EventType == EventType.Snapshot)
+                    .Where(e => e.EventType == EventType.New)
                     .OrderByDescending(o => o.ReceivedDate)
                     .FirstOrDefault();
 
@@ -48,7 +51,7 @@ namespace FrigateSender.Common
             lock (_lockObject)
             {
                 var videosOlderThanTenSeconds = _events
-                    .Where(e => e.EventType == EventType.Video)
+                    .Where(e => e.EventType == EventType.End)
                     .Where(e => e.ReceivedDate.AddSeconds(-10) > DateTime.Now)
                     .OrderByDescending(o => o.ReceivedDate)
                     .FirstOrDefault();

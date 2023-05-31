@@ -17,4 +17,10 @@
     <PackageReference Include="YamlDotNet" Version="13.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="frigateSenderConfiguration.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
