@@ -76,6 +76,17 @@ namespace FrigateSender.Senders
                 }
             }
 
+            try
+            {
+                foreach (var file in filesToSend)
+                    if (File.Exists(filePath))
+                        File.Delete(file);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "Could not delete video files.");
+            }
+
             _logger.Information("Telegram Video sent.");
         }
     }

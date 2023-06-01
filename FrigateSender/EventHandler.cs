@@ -155,7 +155,9 @@ namespace FrigateSender
             {
                 if (filePath != null)
                 {
-                    //File.Delete(filePath);
+                    if(File.Exists(filePath))
+                        File.Delete(filePath);
+                    
                     _logger.Information($"File deleted: {filePath}");
                 }
             }
