@@ -112,7 +112,7 @@ namespace FrigateSender
                 if (filePath != null && File.Exists(filePath))
                     fileSize = (new FileInfo(filePath)).Length;
 
-                _logger.Information($"Download attempt {attempts}, FileSize: {fileSize}, Path: {filePath}");
+                _logger.Information($"Download attempt {attempts}, FileSize: {Math.Round(fileSize.ConvertBytesToMegabytes(), 2)}Mb, Path: {filePath}");
             }
 
             return filePath;
