@@ -179,3 +179,16 @@ cython_debug/
 /FrigateSender.Tests/bin/Debug/net7.0
 /FrigateSender.Tests/obj
 /FrigateSender/frigateSenderConfiguration.yaml
+/src/FrigateSender/.vs
+/src/FrigateSender/bin/Debug/net7.0
+/src/FrigateSender/obj
+/src/FrigateSender.Tests/bin/Debug/net7.0
+/src/FrigateSender.Tests/obj
+/src/FrigateSender/frigateSenderConfiguration.yaml
+/frigatesender/src/FrigateSender/.vs
+/frigatesender/src/FrigateSender/bin/Debug/net7.0/logs
+/frigatesender/src/FrigateSender/bin/Debug/net7.0/temp
+/frigatesender/src/FrigateSender/bin/Debug/net7.0
+/frigatesender/src/FrigateSender/obj
+/frigatesender/src/FrigateSender.Tests/bin/Debug/net7.0
+/frigatesender/src/FrigateSender.Tests/obj

@@ -53,7 +53,6 @@ namespace FrigateSender.Tests
             Assert.IsTrue(returnedSnapShot == snapShot1);
         }
 
-
         [Test]
         [Parallelizable(ParallelScope.Self)]
         public void VideoIsAwaitedForAskingRightAwayIsNull()
