@@ -184,3 +184,4 @@ cython_debug/
 /src/FrigateSender/obj
 /src/FrigateSender.Tests/bin/Debug/net7.0
 /src/FrigateSender.Tests/obj
+/src/FrigateSender/frigateSenderConfiguration.yaml
