@@ -52,8 +52,10 @@ namespace FrigateSender.Common
                             .FromFileInput(videoPath)
                             .OutputToFile(name, false, options => options
                                 .Seek(TimeSpan.FromSeconds(lengthPerSegment * (segment - 1)))
-                                .WithDuration(TimeSpan.FromSeconds(lengthPerSegment)) 
-                                .WithFastStart())
+                                .WithDuration(TimeSpan.FromSeconds(lengthPerSegment))
+                                .OverwriteExisting()
+                                .WithFastStart()
+                            )
                             .ProcessAsynchronously();
                     }
                 }
