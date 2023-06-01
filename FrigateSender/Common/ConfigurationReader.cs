@@ -9,18 +9,22 @@ namespace FrigateSender.Common
     public static class ConfigurationReader
     {
         private static readonly string _configurationFileName = "frigateSenderConfiguration.yaml";
-
+        private static FrigateSenderConfiguration? _configCache = null;
         public static FrigateSenderConfiguration Configuration { get { return GetConfiguration(); } }
 
         private static FrigateSenderConfiguration GetConfiguration()
         {
-            if(File.Exists(_configurationFileName) == false)
+            if (_configCache != null)
+                return _configCache;
+
+            if (File.Exists(_configurationFileName) == false)
             {
                 CreateConfiguration();
             }
 
-            var configuration = ReadFile<FrigateSenderConfiguration>(_configurationFileName);
-            return configuration;
+            _configCache = ReadFile<FrigateSenderConfiguration>(_configurationFileName);
+            
+            return _configCache;
         }
 
         private static T ReadFile<T>(string filePath)

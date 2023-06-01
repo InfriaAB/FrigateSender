@@ -7,10 +7,13 @@ namespace FrigateSender.Common
     {
         private readonly object _lockObject = new object();
         private readonly List<EventData> _events = new List<EventData>();
+        private readonly FrigateSenderConfiguration _configuration;
         private ILogger _logger;
+        
 
-        public EventQue(ILogger logger)
+        public EventQue(ILogger logger, FrigateSenderConfiguration configuration)
         {
+            _configuration = configuration;
             _logger = logger;
         }
 
@@ -60,13 +63,13 @@ namespace FrigateSender.Common
             }
 
             // if all snapshots are sent, get videos.
-            // only get videos that are older than 10 seconds
-            // as frigate takes up to 10 seconds to save video segments.
+            // only get videos that are older than 1025 seconds
+            // as frigate takes up to 25 seconds to save video segments.
             lock (_lockObject)
             {
                 var waitedForVideos = _events
                     .Where(e => e.EventType == EventType.End)
-                    .Where(e => e.ReceivedDate < DateTime.Now.AddSeconds(-25)) // frigate writes slowly, let files save to avoid incomplete videos.
+                    .Where(e => e.ReceivedDate < DateTime.Now.AddSeconds(-_configuration.FrigateVideoSendDelay)) // frigate writes slowly, let files save to avoid incomplete videos.
                     .OrderByDescending(o => o.ReceivedDate)
                     .FirstOrDefault();
 

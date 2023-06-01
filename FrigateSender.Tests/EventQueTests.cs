@@ -28,7 +28,7 @@ namespace FrigateSender.Tests
         [Parallelizable(ParallelScope.Self)]
         public void GetSimpleEnqueBackTest()
         {
-            var eventQue = new EventQue(Log.Logger);
+            var eventQue = new EventQue(Log.Logger, ConfigurationReader.Configuration);
             
             var snapShot1 = new EventData(EventDataTests.testParse1, Log.Logger);
             eventQue.Add(snapShot1);
@@ -41,7 +41,7 @@ namespace FrigateSender.Tests
         [Parallelizable(ParallelScope.Self)]
         public void GetBackSnapshotIfBothVideoAndSnapshotTest()
         {
-            var eventQue = new EventQue(Log.Logger);
+            var eventQue = new EventQue(Log.Logger, ConfigurationReader.Configuration);
 
             var snapShot1 = new EventData(EventDataTests.testParse1, Log.Logger);
             var video1 = new EventData(EventDataTests.testParse4, Log.Logger);
@@ -58,7 +58,7 @@ namespace FrigateSender.Tests
         [Parallelizable(ParallelScope.Self)]
         public void VideoIsAwaitedForAskingRightAwayIsNull()
         {
-            var eventQue = new EventQue(Log.Logger);
+            var eventQue = new EventQue(Log.Logger, ConfigurationReader.Configuration);
 
             var snapShot1 = new EventData(EventDataTests.testParse1, Log.Logger);
             var video1 = new EventData(EventDataTests.testParse4, Log.Logger);
@@ -75,7 +75,7 @@ namespace FrigateSender.Tests
         [Parallelizable(ParallelScope.Self)]
         public async Task WaitingForVideoReturnsVideo()
         {
-            var eventQue = new EventQue(Log.Logger);
+            var eventQue = new EventQue(Log.Logger, ConfigurationReader.Configuration);
 
             var snapShot1 = new EventData(EventDataTests.testParse1, Log.Logger);
             var video1 = new EventData(EventDataTests.testParse4, Log.Logger);
@@ -83,7 +83,7 @@ namespace FrigateSender.Tests
             eventQue.Add(snapShot1);
             eventQue.Add(video1);
 
-            await Task.Delay(TimeSpan.FromSeconds(26));
+            await Task.Delay(TimeSpan.FromSeconds(ConfigurationReader.Configuration.FrigateVideoSendDelay + 1));
             var trash = eventQue.GetNext();
             var returnedVideo = eventQue.GetNext();
 
@@ -94,7 +94,7 @@ namespace FrigateSender.Tests
         [Parallelizable(ParallelScope.Self)]
         public async Task GetBackOldestSnapshotWhenMultipleTest()
         {
-            var eventQue = new EventQue(Log.Logger);
+            var eventQue = new EventQue(Log.Logger, ConfigurationReader.Configuration);
 
             var snapShot1 = new EventData(EventDataTests.testParse1, Log.Logger);
 
@@ -117,7 +117,7 @@ namespace FrigateSender.Tests
         [Parallelizable(ParallelScope.Self)]
         public async Task GetBackEventsInRightOrderWhenMultipleTest()
         {
-            var eventQue = new EventQue(Log.Logger);
+            var eventQue = new EventQue(Log.Logger, ConfigurationReader.Configuration);
 
             var snapShot1 = new EventData(EventDataTests.testParse1, Log.Logger);
             await Task.Delay(1000);
@@ -132,7 +132,7 @@ namespace FrigateSender.Tests
             eventQue.Add(snapShot1);
             eventQue.Add(snapShot2);
 
-            await Task.Delay(TimeSpan.FromSeconds(26));
+            await Task.Delay(TimeSpan.FromSeconds(ConfigurationReader.Configuration.FrigateVideoSendDelay + 1));
 
             var returnedSnapShot1 = eventQue.GetNext();
             var returnedSnapShot2 = eventQue.GetNext();
@@ -146,6 +146,25 @@ namespace FrigateSender.Tests
 
             Assert.IsTrue(returnedVideo1.EventId == video1.EventId);
             Assert.IsTrue(returnedVideo2.EventId == video2.EventId);
+        }
+
+        [Test]
+        [Parallelizable(ParallelScope.Self)]
+        public async Task AskingForVideoToFastReturnsNothingTest()
+        {
+            var eventQue = new EventQue(Log.Logger, ConfigurationReader.Configuration);
+
+            var video1 = new EventData(EventDataTests.testParse4, Log.Logger);
+            var video2 = new EventData(EventDataTests.testParse4, Log.Logger);
+
+            eventQue.Add(video1);
+            eventQue.Add(video2);
+
+            var returnedVideo1 = eventQue.GetNext();
+            var returnedVideo2 = eventQue.GetNext();
+
+            Assert.IsNull(returnedVideo1);
+            Assert.IsNull(returnedVideo2);
         }
     }
 }

@@ -34,6 +34,12 @@
         public string VideoURL { get; set; } = "{{base_url}}/api/frigate/notifications/{{id}}/{{camera}}/clip.mp4";
 
         /// <summary>
+        /// Time to wait in seconds after receiving Frigate "end" event before trying to get video.
+        /// Frigate takes time to store video, if getting to soon only a partial download will be made.
+        /// </summary>
+        public int FrigateVideoSendDelay { get; set; } = 25;
+
+        /// <summary>
         /// Where to store log files.
         /// </summary>
         public string LoggingPath { get; set; } = "logs";

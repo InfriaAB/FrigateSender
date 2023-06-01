@@ -16,7 +16,7 @@ namespace FrigateSender
 
             Log.Logger.Information("Program.Main: Start.");
 
-            var eventQue = new EventQue(Log.Logger);
+            var eventQue = new EventQue(Log.Logger, config);
             using (var mqttClient = new MQTTClient(config, eventQue, Log.Logger, _ct.Token))
             {
                 await mqttClient.Start(_ct.Token);
