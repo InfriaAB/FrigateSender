@@ -1,9 +1,9 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
-name: Example add-on
+name: FrigateSender
 version: "1.2.0"
-slug: example
-description: Example add-on
-url: "https://github.com/home-assistant/addons-example/tree/main/example"
+slug: frigatesender
+description: Sends Frigate snapshots and videos without needing to expose anything to the internet.
+url: "https://github.com/InfriaAB/FrigateSender"
 arch:
   - armhf
   - armv7
@@ -17,4 +17,3 @@ options:
   message: "Hello world..."
 schema:
   message: "str?"
-image: "ghcr.io/home-assistant/{arch}-addon-example"
