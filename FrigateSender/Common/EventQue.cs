@@ -64,19 +64,19 @@ namespace FrigateSender.Common
             // as frigate takes up to 10 seconds to save video segments.
             lock (_lockObject)
             {
-                var videosOlderThanTenSeconds = _events
+                var waitedForVideos = _events
                     .Where(e => e.EventType == EventType.End)
                     .Where(e => e.ReceivedDate < DateTime.Now.AddSeconds(-25)) // frigate writes slowly, let files save to avoid incomplete videos.
                     .OrderByDescending(o => o.ReceivedDate)
                     .FirstOrDefault();
 
-                if (videosOlderThanTenSeconds != null)
+                if (waitedForVideos != null)
                 {
                     _logger.Information("EventQue: Found Video to handle.");
-                    _events.Remove(videosOlderThanTenSeconds);
+                    _events.Remove(waitedForVideos);
                 }
 
-                return videosOlderThanTenSeconds;
+                return waitedForVideos;
             }
         }
     }
