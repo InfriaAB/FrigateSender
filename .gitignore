@@ -172,3 +172,9 @@ cython_debug/
 /v2/FrigateSender/bin/Debug/net7.0
 /v2/.vs/ProjectEvaluation
 /v2/FrigateSender/frigateSenderConfiguration.yaml
+/.vs
+/FrigateSender/.vs
+/FrigateSender/bin/Debug/net7.0
+/FrigateSender/obj
+/FrigateSender.Tests/bin/Debug/net7.0
+/FrigateSender.Tests/obj
