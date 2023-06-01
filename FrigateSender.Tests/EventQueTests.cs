@@ -83,7 +83,7 @@ namespace FrigateSender.Tests
             eventQue.Add(snapShot1);
             eventQue.Add(video1);
 
-            await Task.Delay(TimeSpan.FromSeconds(11));
+            await Task.Delay(TimeSpan.FromSeconds(26));
             var trash = eventQue.GetNext();
             var returnedVideo = eventQue.GetNext();
 
@@ -132,7 +132,7 @@ namespace FrigateSender.Tests
             eventQue.Add(snapShot1);
             eventQue.Add(snapShot2);
 
-            await Task.Delay(TimeSpan.FromSeconds(11));
+            await Task.Delay(TimeSpan.FromSeconds(26));
 
             var returnedSnapShot1 = eventQue.GetNext();
             var returnedSnapShot2 = eventQue.GetNext();

@@ -66,7 +66,7 @@ namespace FrigateSender.Common
             {
                 var videosOlderThanTenSeconds = _events
                     .Where(e => e.EventType == EventType.End)
-                    .Where(e => e.ReceivedDate < DateTime.Now.AddSeconds(-20)) // frigate writes slowly, let files save to avoid incomplete videos.
+                    .Where(e => e.ReceivedDate < DateTime.Now.AddSeconds(-25)) // frigate writes slowly, let files save to avoid incomplete videos.
                     .OrderByDescending(o => o.ReceivedDate)
                     .FirstOrDefault();
 
