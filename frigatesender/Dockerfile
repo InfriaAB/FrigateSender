@@ -1,7 +1,5 @@
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
@@ -9,8 +7,6 @@ RUN apt-get update && apt-get install -y ffmpeg
 
 WORKDIR /src
 COPY ["src", ""]
-#COPY ["NuGet.Config", ""]
-#COPY ["test", "test"]
 COPY ["*.sln", ""]
 
 COPY . .
@@ -33,4 +29,4 @@ ENTRYPOINT ["dotnet", "FrigateSender.dll"]
 
 # go to directory above docker file in it in PS, and write: 
 # docker build FrigateSender -t frigatesender --progress=plain
-# docker run -d -p 80:80 boskapstorget:latest -e environment=Development -e ASPNETCORE_ENVIRONMENT=Development
+# docker run -d -p 80:80 frigatesender:latest -e environment=Development -e ASPNETCORE_ENVIRONMENT=Development
