@@ -69,6 +69,11 @@ namespace FrigateSender.Models
                         EventType = EventType.Unknown;
                 }
 
+                if (afterElement.TryGetProperty("camera", out JsonElement cameraName))
+                {
+                    CameraName = cameraName.ToString();
+                }
+
                 if (afterElement.TryGetProperty("label", out JsonElement objectType))
                 {
                     ObjectType = objectType.ToString();

@@ -25,6 +25,7 @@ namespace FrigateSender.Tests
             var e1 = new Models.EventData(testParse1, Log.Logger);
             Assert.IsNotNull(e1.EventId);
             Assert.IsTrue(e1.HasSnapshot);
+            Assert.IsTrue(e1.CameraName.Length > 0);
             Assert.IsTrue(e1.EventType == Models.EventType.New);
         }
 
@@ -34,6 +35,7 @@ namespace FrigateSender.Tests
             var e1 = new Models.EventData(testParse2, Log.Logger);
             Assert.IsNotNull(e1.EventId);
             Assert.IsTrue(e1.HasSnapshot);
+            Assert.IsTrue(e1.CameraName.Length > 0);
             Assert.IsTrue(e1.EventType == Models.EventType.Update);
         }
 
@@ -43,6 +45,7 @@ namespace FrigateSender.Tests
             var e1 = new Models.EventData(testParse3, Log.Logger);
             Assert.IsNotNull(e1.EventId);
             Assert.IsTrue(e1.HasSnapshot);
+            Assert.IsTrue(e1.CameraName.Length > 0);
             Assert.IsTrue(e1.EventType == Models.EventType.Update);
         }
 
@@ -52,6 +55,7 @@ namespace FrigateSender.Tests
             var e1 = new Models.EventData(testParse4, Log.Logger);
             Assert.IsNotNull(e1.EventId);
             Assert.IsTrue(e1.HasClip);
+            Assert.IsTrue(e1.CameraName.Length > 0);
             Assert.IsTrue(e1.EventType == Models.EventType.End);
         }
     }

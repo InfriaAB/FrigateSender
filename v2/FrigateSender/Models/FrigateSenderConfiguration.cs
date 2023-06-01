@@ -16,7 +16,7 @@
         /// Max file (video) size per upload, files larger than this will be split apart.
         /// This depends on the service you are using, Telegram has max limit of 50Mb per file.
         /// </summary>
-        public int FileSizeMaxPerSend { get; set; } = 48;
+        public int FileSizeMaxPerSend { get; set; } = 10;
 
         /// <summary>
         /// Base URL of Home Assistant
@@ -37,6 +37,11 @@
         /// Where to store log files.
         /// </summary>
         public string LoggingPath { get; set; } = "logs";
+
+        /// <summary>
+        /// Temporary folder for storing media files.
+        /// </summary>
+        public string TemporaryFolder { get; set; } = "temp";
 
         /// <summary>
         /// What level of logging to do.

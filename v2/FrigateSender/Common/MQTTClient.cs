@@ -54,7 +54,7 @@ namespace FrigateSender
             // loop of trying to connect every one second untill success.
             _MQTTClient.DisconnectedAsync += async e =>
             {
-                _logger.Information($"MQTT Disconnected, Code: {e.Reason.ToString()}({e.Reason}).");
+                _logger.Information($"MQTT Disconnected, Code: {e.Reason.ToString()}({(int)e.Reason}).");
                 _logger.Information("Retrying connection in 2 seconds");
                 await Task.Delay(2000);
                 await Start(ct);
@@ -73,7 +73,7 @@ namespace FrigateSender
             try
             {
                 var result = await _MQTTClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
-                _logger.Information($"Connection result code: {result.ResultCode.ToString()}({result.ResultCode}).");
+                _logger.Information($"Connection result code: {result.ResultCode.ToString()}({(int)result.ResultCode}).");
             }
             catch (Exception ex)
             {

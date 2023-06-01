@@ -19,15 +19,21 @@ namespace FrigateSender.Common
             // only care about new and end as they are snapshots and videos
             if (eventData.EventType != EventType.Update)
             {
+                _logger.Information("Event Queued, Is of type: " + eventData.EventType);
+
                 lock (_lockObject)
                 {
                     _events.Add(eventData);
+
+                    var eventsCount = _events
+                        .GroupBy(e => e.EventType)
+                        .Select(e => $"{e.Key}: {e.Count()}");
+                    _logger.Information("EventQue: Current event que: " + string.Join(", ", eventsCount));
                 }
-                _logger.Information("Event qued, Is of type: " + eventData.EventType);
             }
             else
             {
-                _logger.Information("Skipping event. Is of type: " + eventData.EventType);
+                _logger.Information("EventQue: Skipping event. Is of type: " + eventData.EventType);
             }
         }
 
@@ -47,6 +53,7 @@ namespace FrigateSender.Common
 
                 if (oldestSnapshot != null)
                 {
+                    _logger.Information("EventQue: Found Snapshot to handle.");
                     _events.Remove(oldestSnapshot);
                     return oldestSnapshot;
                 }
@@ -59,12 +66,15 @@ namespace FrigateSender.Common
             {
                 var videosOlderThanTenSeconds = _events
                     .Where(e => e.EventType == EventType.End)
-                    .Where(e => e.ReceivedDate.AddSeconds(-10) > DateTime.Now)
+                    .Where(e => e.ReceivedDate < DateTime.Now.AddSeconds(-10))
                     .OrderByDescending(o => o.ReceivedDate)
                     .FirstOrDefault();
 
-                if(videosOlderThanTenSeconds != null)
+                if (videosOlderThanTenSeconds != null)
+                {
+                    _logger.Information("EventQue: Found Video to handle.");
                     _events.Remove(videosOlderThanTenSeconds);
+                }
 
                 return videosOlderThanTenSeconds;
             }

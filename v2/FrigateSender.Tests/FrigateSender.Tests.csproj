@@ -21,4 +21,10 @@
     <ProjectReference Include="..\FrigateSender\FrigateSender.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="media\TestVideoHandlerSplitFile.mp4">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
