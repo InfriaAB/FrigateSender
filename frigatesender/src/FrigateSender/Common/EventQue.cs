@@ -51,7 +51,7 @@ namespace FrigateSender.Common
             lock (_lockObject) {
                 var oldestSnapshot = _events
                     .Where(e => e.EventType == EventType.New)
-                    .OrderByDescending(o => o.ReceivedDate)
+                    .OrderBy(o => o.ReceivedDate)
                     .FirstOrDefault();
 
                 if (oldestSnapshot != null)
@@ -70,7 +70,7 @@ namespace FrigateSender.Common
                 var waitedForVideos = _events
                     .Where(e => e.EventType == EventType.End)
                     .Where(e => e.ReceivedDate < DateTime.Now.AddSeconds(-_configuration.FrigateVideoSendDelay)) // frigate writes slowly, let files save to avoid incomplete videos.
-                    .OrderByDescending(o => o.ReceivedDate)
+                    .OrderBy(o => o.ReceivedDate)
                     .FirstOrDefault();
 
                 if (waitedForVideos != null)
