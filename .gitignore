@@ -192,3 +192,7 @@ cython_debug/
 /frigatesender/src/FrigateSender/obj
 /frigatesender/src/FrigateSender.Tests/bin/Debug/net7.0
 /frigatesender/src/FrigateSender.Tests/obj
+/frigatesender/src/FrigateSender/bin/Release/net7.0
+/frigatesender/src/FrigateSender.Tests/bin/Release/net7.0
+/frigatesender/src/FrigateSender/Properties/PublishProfiles
+*.user
