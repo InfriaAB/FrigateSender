@@ -10,26 +10,40 @@ namespace FrigateSender
 
         static async Task Main(string[] args)
         {
-            var config = ConfigurationReader.Configuration;
-            SetupLogging(config);
-            HandleExit();
-
-            Log.Logger.Information("Program.Main: Start.");
-
-            var eventQue = new EventQue(Log.Logger, config);
-            using (var mqttClient = new MQTTClient(config, eventQue, Log.Logger, _ct.Token))
+            int loop = 0;
+            while (_ct.IsCancellationRequested == false)
             {
-                await mqttClient.Start(_ct.Token);
-                
-                var messageHandler = new EventHandler(eventQue, config, Log.Logger);
-                await messageHandler.Start(_ct.Token);
-
-                while (_ct.IsCancellationRequested == false)
+                loop++;
+                try
                 {
-                    await Task.Delay(100, _ct.Token);
-                    await messageHandler.Work(_ct.Token);
+                    var config = ConfigurationReader.Configuration;
+                    SetupLogging(config);
+                    HandleExit();
+                    Log.Logger.Information($"Program.Main: Start. Attempt: {loop}.");
+
+                    var eventQue = new EventQue(Log.Logger, config);
+                    using (var mqttClient = new MQTTClient(config, eventQue, Log.Logger, _ct.Token))
+                    {
+                        await mqttClient.Start(_ct.Token);
+
+                        var messageHandler = new EventHandler(eventQue, config, Log.Logger);
+                        await messageHandler.Start(_ct.Token);
+
+                        while (_ct.IsCancellationRequested == false)
+                        {
+                            await Task.Delay(100, _ct.Token);
+                            await messageHandler.Work(_ct.Token);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Logger.Error(e, "Crashed in Program.Main.");
+                    Log.Logger.Information("Should restart shortly.");
+                    await Task.Delay(200);
                 }
             }
+
             Log.Logger.Information("Exiting gracefully.");
         }
 
