@@ -120,10 +120,11 @@ namespace FrigateSender
 
         private string? DownloadFile(string fileURL, string fileType, CancellationToken ct)
         {
+            string? tempFile = null;
             try
             {
                 var fileName = DateTime.Now.ToString("yyyyMMdd_HHmmss") + Guid.NewGuid().ToString().Replace("-", "") + fileType;
-                var tempFile = Path.Join(_config.TemporaryFolder, fileName);
+                tempFile = Path.Join(_config.TemporaryFolder, fileName);
 
                 _logger.Information($"Downloading {tempFile} from: {fileURL}.");
 
@@ -144,6 +145,7 @@ namespace FrigateSender
             catch (Exception ex)
             {
                 _logger.Error(ex, "Failed downloading file.");
+                Cleanup(tempFile);
             }
 
             return null;
