@@ -92,8 +92,15 @@
         public string TelegramToken { get; set; } = "123:1234";
 
         /// <summary>
-        /// Telegram Chat to send to.
+        /// Telegram chat to send to.
         /// </summary>
         public int TelegramChatId { get; set; } = -123;
+
+        /// <summary>
+        /// Telegram chat to send videos to, can be same as TelegramChatId.
+        /// If a lot of videos are generated it could be nice to  have this in a 
+        /// separate muted chat and just have notifications on the snapshot chat.
+        /// </summary>
+        public int TelegramVideoChatId { get; set; } = -456;
     }
 }

@@ -72,7 +72,7 @@ namespace FrigateSender.Senders
                 using (FileStream fsSource = new FileStream(file, FileMode.Open, FileAccess.Read))
                 {
                     var inputFile = Telegram.Bot.Types.InputFile.FromStream(fsSource);
-                    await _client.SendVideoAsync(_configuration.TelegramChatId, inputFile, caption: sendMessage, cancellationToken: ct);
+                    await _client.SendVideoAsync(_configuration.TelegramVideoChatId, inputFile, caption: sendMessage, cancellationToken: ct);
                 }
             }
 

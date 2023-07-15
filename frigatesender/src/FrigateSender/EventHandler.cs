@@ -68,7 +68,7 @@ namespace FrigateSender
             string? filePath = TryGetFile(snapshotURL, ".jpg", 10, 10, ct);
             if (filePath != null)
             {
-                var message = $"{ev.ObjectType.FirstLetterToUpper()}({ev.Score}) in {ev.CameraName.FirstLetterToUpper()}, {ev.ReceivedDate.ToString("yyyy-MM-dd HH:mm:ss")}, id: {ev.EventId}.";
+                var message = $"Snapshot: {ev.ObjectType.FirstLetterToUpper()}({ev.Score}) in {ev.CameraName.FirstLetterToUpper()}, {ev.ReceivedDate.ToString("yyyy-MM-dd HH:mm:ss")}, id: {ev.EventId}.";
                 foreach (var sender in _senders)
                 {
                     await sender.SendPhoto(message, filePath, ct);
@@ -88,7 +88,8 @@ namespace FrigateSender
             string? filePath = TryGetFile(videoURL, ".mp4", 10, 1000, ct);
             if (filePath != null)
             {
-                var message = $"id: {ev.EventId},";
+                //var message = $"id: {ev.EventId},";
+                var message = $"Video: {ev.ObjectType.FirstLetterToUpper()}({ev.Score}) in {ev.CameraName.FirstLetterToUpper()}, {ev.ReceivedDate.ToString("yyyy-MM-dd HH:mm:ss")}, id: {ev.EventId}.";
                 foreach (var sender in _senders)
                 {
                     await sender.SendVideo(message, filePath, ct);
