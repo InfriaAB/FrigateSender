@@ -26,12 +26,15 @@ namespace FrigateSender.Common
                 // only rate limit new as this is when snapshots are sent.
                 if (eventData.EventType == EventType.New) 
                 {
+                    _logger.Information("is new event");
                     var secondsSinceLastAddByCamera = GetTimeSinceCameraAdd(eventData.CameraName);
-                    if(secondsSinceLastAddByCamera != null && secondsSinceLastAddByCamera?.TotalSeconds < _configuration.RateLimit)
+                    if(secondsSinceLastAddByCamera != null && secondsSinceLastAddByCamera < _configuration.RateLimitTimeout)
                     {
-                        _logger.Information($"Skipping Snapshot from: {eventData.CameraName} since it posted an image only {((int)(secondsSinceLastAddByCamera?.TotalSeconds ?? -1))} seconds ago. Skipped snapshot Id: {eventData.EventId}.");
+                        _logger.Information($"Skipping Snapshot from: {eventData.CameraName} since it posted an image only {((int)(secondsSinceLastAddByCamera ?? -1))} seconds ago. Skipped snapshot Id: {eventData.EventId}.");
                         return;
                     }
+                    else 
+                        _logger.Information($"{eventData.CameraName} passed rate limit test, seconds: {secondsSinceLastAddByCamera}" );
                 }
 
                 _logger.Information("Event Queued, Is of type: " + eventData.EventType);
@@ -46,8 +49,11 @@ namespace FrigateSender.Common
                     _logger.Information("EventQue: Current event que: " + string.Join(", ", eventsCount));
 
                     // save last time snapshot was sent (new == snapshot).
-                    if(eventData.EventType == EventType.New)
+                    if (eventData.EventType == EventType.New)
+                    {
+                        _logger.Information("Updating Snapshottime for {0}", eventData.CameraName);
                         _RateLimitCache[eventData.CameraName] = DateTime.Now;
+                    }
                 }
             }
             else
@@ -56,7 +62,7 @@ namespace FrigateSender.Common
             }
         }
 
-        private TimeSpan? GetTimeSinceCameraAdd(string cameraName)
+        private int? GetTimeSinceCameraAdd(string cameraName)
         {
             if (cameraName == null)
                 return null;
@@ -64,7 +70,7 @@ namespace FrigateSender.Common
             if(_RateLimitCache.ContainsKey(cameraName) == false)
                 return null;
 
-            return DateTime.Now - _RateLimitCache[cameraName];
+            return (int) Math.Round((DateTime.Now - _RateLimitCache[cameraName]).TotalSeconds, 0);
         }
 
         public EventData? GetNext()

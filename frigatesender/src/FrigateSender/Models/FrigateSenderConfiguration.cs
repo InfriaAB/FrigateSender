@@ -5,12 +5,7 @@
         /// <summary>
         /// Snapshot rate limit interval per camera in seconds.
         /// </summary>
-        public int RateLimitTimeout { get; set; } = 20;
-
-        /// <summary>
-        /// Max of how many do you want to receive over a X second period.
-        /// </summary>
-        public int RateLimit { get; set; } = 6;
+        public int RateLimitTimeout { get; set; } = 10;
 
         /// <summary>
         /// Max file (video) size per upload, files larger than this will be split apart.
