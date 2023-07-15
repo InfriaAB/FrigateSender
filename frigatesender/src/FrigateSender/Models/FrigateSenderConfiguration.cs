@@ -3,7 +3,7 @@
     public class FrigateSenderConfiguration
     {
         /// <summary>
-        /// Set timout interval.
+        /// Snapshot rate limit interval per camera in seconds.
         /// </summary>
         public int RateLimitTimeout { get; set; } = 20;
 

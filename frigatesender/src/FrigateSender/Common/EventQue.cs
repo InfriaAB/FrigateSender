@@ -9,7 +9,8 @@ namespace FrigateSender.Common
         private readonly List<EventData> _events = new List<EventData>();
         private readonly FrigateSenderConfiguration _configuration;
         private ILogger _logger;
-        
+
+        Dictionary<string, DateTime> _RateLimitCache = new Dictionary<string, DateTime>();
 
         public EventQue(ILogger logger, FrigateSenderConfiguration configuration)
         {
@@ -22,6 +23,16 @@ namespace FrigateSender.Common
             // only care about new and end as they are snapshots and videos
             if (eventData.EventType != EventType.Update)
             {
+                if(eventData.EventType == EventType.New)
+                {
+                    var secondsSinceLastAddByCamera = GetTimeSinceCameraAdd(eventData.CameraName);
+                    if(secondsSinceLastAddByCamera != null && secondsSinceLastAddByCamera?.TotalSeconds < _configuration.RateLimit)
+                    {
+                        _logger.Information($"Skipping snapshot from: {eventData.CameraName} since it posted an image only {((int)(secondsSinceLastAddByCamera?.TotalSeconds ?? -1))} seconds ago. Skipped snapshot Id: {eventData.EventId}.");
+                        return;
+                    }
+                }
+
                 _logger.Information("Event Queued, Is of type: " + eventData.EventType);
 
                 lock (_lockObject)
@@ -32,12 +43,25 @@ namespace FrigateSender.Common
                         .GroupBy(e => e.EventType)
                         .Select(e => $"{e.Key}: {e.Count()}");
                     _logger.Information("EventQue: Current event que: " + string.Join(", ", eventsCount));
+
+                    _RateLimitCache[eventData.CameraName] = DateTime.Now;
                 }
             }
             else
             {
                 _logger.Information("EventQue: Skipping event. Is of type: " + eventData.EventType);
             }
+        }
+
+        private TimeSpan? GetTimeSinceCameraAdd(string cameraName)
+        {
+            if (cameraName == null)
+                return null;
+
+            if(_RateLimitCache.ContainsKey(cameraName) == false)
+                return null;
+
+            return DateTime.UtcNow - _RateLimitCache[cameraName];
         }
 
         public EventData? GetNext()
