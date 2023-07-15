@@ -1,6 +1,4 @@
 ﻿using FrigateSender.Models;
-using System;
-using System.Collections.Generic;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 

@@ -20,15 +20,16 @@ namespace FrigateSender.Senders
             _videoHandler = new VideoHandler(logger);
         }
 
-        public async Task SendText(string message, CancellationToken ct)
+        public async Task SendText(string message, CancellationToken ct, int? chatId = null)
         {
+            var targetChat = chatId ?? _configuration.TelegramChatId;
             try
             {
-                await _client.SendTextMessageAsync(_configuration.TelegramChatId, message, cancellationToken: ct);
+                await _client.SendTextMessageAsync(targetChat, message, cancellationToken: ct);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Telegram SendText failed.");
+                _logger.Error(ex, "Telegram SendText failed, target chat: {0}", targetChat);
             }
         }
 
@@ -45,7 +46,7 @@ namespace FrigateSender.Senders
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, "Telegram SendPhoto failed.");
+                _logger.Error(ex, "Telegram SendPhoto failed. Message: {0}", message);
             }
         }
 
@@ -72,7 +73,14 @@ namespace FrigateSender.Senders
                 using (FileStream fsSource = new FileStream(file, FileMode.Open, FileAccess.Read))
                 {
                     var inputFile = Telegram.Bot.Types.InputFile.FromStream(fsSource);
-                    await _client.SendVideoAsync(_configuration.TelegramVideoChatId, inputFile, caption: sendMessage, cancellationToken: ct);
+                    try
+                    {
+                        await _client.SendVideoAsync(_configuration.TelegramVideoChatId, inputFile, caption: sendMessage, cancellationToken: ct);
+                    }
+                    catch (Exception e)
+                    {
+                        _logger.Error(e, "Failed to send video to chat {0}, message: '{1}'", _configuration.TelegramVideoChatId, message);
+                    }
                 }
             }
 

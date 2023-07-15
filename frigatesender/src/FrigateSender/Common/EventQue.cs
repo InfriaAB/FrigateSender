@@ -23,12 +23,13 @@ namespace FrigateSender.Common
             // only care about new and end as they are snapshots and videos
             if (eventData.EventType != EventType.Update)
             {
-                if(eventData.EventType == EventType.New)
+                // only rate limit new as this is when snapshots are sent.
+                if (eventData.EventType == EventType.New) 
                 {
                     var secondsSinceLastAddByCamera = GetTimeSinceCameraAdd(eventData.CameraName);
                     if(secondsSinceLastAddByCamera != null && secondsSinceLastAddByCamera?.TotalSeconds < _configuration.RateLimit)
                     {
-                        _logger.Information($"Skipping snapshot from: {eventData.CameraName} since it posted an image only {((int)(secondsSinceLastAddByCamera?.TotalSeconds ?? -1))} seconds ago. Skipped snapshot Id: {eventData.EventId}.");
+                        _logger.Information($"Skipping Snapshot from: {eventData.CameraName} since it posted an image only {((int)(secondsSinceLastAddByCamera?.TotalSeconds ?? -1))} seconds ago. Skipped snapshot Id: {eventData.EventId}.");
                         return;
                     }
                 }
@@ -44,7 +45,9 @@ namespace FrigateSender.Common
                         .Select(e => $"{e.Key}: {e.Count()}");
                     _logger.Information("EventQue: Current event que: " + string.Join(", ", eventsCount));
 
-                    _RateLimitCache[eventData.CameraName] = DateTime.Now;
+                    // save last time snapshot was sent (new == snapshot).
+                    if(eventData.EventType == EventType.New)
+                        _RateLimitCache[eventData.CameraName] = DateTime.Now;
                 }
             }
             else
@@ -61,7 +64,7 @@ namespace FrigateSender.Common
             if(_RateLimitCache.ContainsKey(cameraName) == false)
                 return null;
 
-            return DateTime.UtcNow - _RateLimitCache[cameraName];
+            return DateTime.Now - _RateLimitCache[cameraName];
         }
 
         public EventData? GetNext()

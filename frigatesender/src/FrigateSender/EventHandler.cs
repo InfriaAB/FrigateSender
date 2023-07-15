@@ -29,6 +29,10 @@ namespace FrigateSender
             foreach (var sender in _senders)
             {
                 await sender.SendText("FrigateSender is Online.", ct);
+                if(_config.TelegramChatId != _config.TelegramVideoChatId)
+                {
+                    await sender.SendText("FrigateSender is Online.", ct, _config.TelegramVideoChatId);
+                }
             }
         }
 

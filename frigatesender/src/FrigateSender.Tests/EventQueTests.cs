@@ -96,15 +96,17 @@ namespace FrigateSender.Tests
             var eventQue = new EventQue(Log.Logger, ConfigurationReader.Configuration);
 
             var snapShot1 = new EventData(EventDataTests.testParse1, Log.Logger);
-
-            await Task.Delay(TimeSpan.FromSeconds(1));
-
-            var snapShot2 = new EventData(EventDataTests.testParse1, Log.Logger);
             var video1 = new EventData(EventDataTests.testParse4, Log.Logger);
-            var video2 = new EventData(EventDataTests.testParse4, Log.Logger);
 
             eventQue.Add(video1);
             eventQue.Add(snapShot1);
+
+            // event que rate limits, need to slow down adding.
+            await Task.Delay(TimeSpan.FromSeconds(21));
+
+            var snapShot2 = new EventData(EventDataTests.testParse1, Log.Logger);
+            var video2 = new EventData(EventDataTests.testParse4, Log.Logger);
+          
             eventQue.Add(snapShot2);
             eventQue.Add(video2);
 
@@ -119,17 +121,18 @@ namespace FrigateSender.Tests
             var eventQue = new EventQue(Log.Logger, ConfigurationReader.Configuration);
 
             var snapShot1 = new EventData(EventDataTests.testParse1, Log.Logger);
-            await Task.Delay(1000);
-            var snapShot2 = new EventData(EventDataTests.testParse1, Log.Logger);
-            
-            var video1 = new EventData(EventDataTests.testParse4, Log.Logger);
-            await Task.Delay(1000);
-            var video2 = new EventData(EventDataTests.testParse4, Log.Logger);
-
-            eventQue.Add(video1);
-            eventQue.Add(video2);
             eventQue.Add(snapShot1);
+
+            await Task.Delay(TimeSpan.FromSeconds(21));
+            var snapShot2 = new EventData(EventDataTests.testParse1, Log.Logger);
             eventQue.Add(snapShot2);
+
+            var video1 = new EventData(EventDataTests.testParse4, Log.Logger);
+            eventQue.Add(video1);
+            await Task.Delay(1000);
+
+            var video2 = new EventData(EventDataTests.testParse4, Log.Logger);
+            eventQue.Add(video2);
 
             await Task.Delay(TimeSpan.FromSeconds(ConfigurationReader.Configuration.FrigateVideoSendDelay + 1));
 
