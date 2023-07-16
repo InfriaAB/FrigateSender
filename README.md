@@ -1,7 +1,10 @@
 ## Frigate Sender
-An Add-On that sends snapshots and videos from Frigate to Telegram without exposing anything or requiring you to open up anything to the internet.
+A stand alone Add-On that sends snapshots and videos from Frigate to Telegram without exposing anything or requiring you to open up anything to the internet.
+Listens to the MQTT events from frigate and accesses the frigate API to get snapshots and images.
 
-Add-on documentation: <https://github.com/InfriaAB/FrigateSender/>
+Currently run from separate Docker instance. In the future I hope this can be added as a Home Assistant plugin.
+
+<!-- Add-on documentation: <https://github.com/InfriaAB/FrigateSender/>
 
 [![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2FInfriaAB%2FFrigateSender%2F)
 
@@ -18,7 +21,7 @@ This repository contains the following add-ons
 ![Supports i386 Architecture][i386-shield]
 
 _Example add-on to use as a blueprint for new add-ons._
-
+ -->
 <!--
 
 Notes to developers after forking or using the github template feature:
@@ -37,9 +40,10 @@ Notes to developers after forking or using the github template feature:
 - Share your repository on the forums https://community.home-assistant.io/c/projects/9
 - Do awesome stuff!
  -->
-
+ <!--
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
 [armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
 [armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
 [i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
+-->
