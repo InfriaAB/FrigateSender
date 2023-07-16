@@ -40,7 +40,8 @@ namespace FrigateSender.Common
 
                 var targetSplitFileName = Path.Join(targetPath, targetFileName + "_split_{{i}}" + targetSuffix);
 
-                _logger.Information($"Split calculation: Segments: {segments}, LengthPerSegment: {lengthPerSegment}, Total Size: {fileSizeMb}, Estimated segment size: {fileSizeMb/segments}.");
+                _logger.Information("Split calculation: Segments: {0}, LengthPerSegment: {1}, Total Size: {2}, Estimated segment size: {3}.",
+                    segments, lengthPerSegment, fileSizeMb, Math.Round((fileSizeMb/segments), 2));
 
                 try
                 {

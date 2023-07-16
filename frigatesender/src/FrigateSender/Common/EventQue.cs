@@ -30,14 +30,14 @@ namespace FrigateSender.Common
                     var secondsSinceLastAddByCamera = GetTimeSinceCameraAdd(eventData.CameraName);
                     if(secondsSinceLastAddByCamera != null && secondsSinceLastAddByCamera < _configuration.RateLimitTimeout)
                     {
-                        _logger.Information($"Skipping Snapshot from: {eventData.CameraName} since it posted an image only {((int)(secondsSinceLastAddByCamera ?? -1))} seconds ago. Skipped snapshot Id: {eventData.EventId}.");
+                        _logger.Information("Skipping Snapshot from: {0} since it posted an image only {1} seconds ago. Skipped snapshot Id: {2}.", eventData.CameraName, ((int)(secondsSinceLastAddByCamera ?? -1)), eventData.EventId);
                         return;
                     }
                     else 
-                        _logger.Information($"{eventData.CameraName} passed rate limit test, seconds: {secondsSinceLastAddByCamera}" );
+                        _logger.Information("{0} passed rate limit test, seconds: {1}", eventData.CameraName, secondsSinceLastAddByCamera);
                 }
 
-                _logger.Information("Event Queued, Is of type: " + eventData.EventType);
+                _logger.Information("Event Queued from {0}, Is of type: {1}.", eventData.CameraName, eventData.EventType);
 
                 lock (_lockObject)
                 {

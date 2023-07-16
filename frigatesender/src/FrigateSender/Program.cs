@@ -19,7 +19,7 @@ namespace FrigateSender
                     var config = ConfigurationReader.Configuration;
                     SetupLogging(config);
                     HandleExit();
-                    Log.Logger.Information($"Program.Main: Start. Attempt: {loop}.");
+                    Log.Logger.Information("Program.Main: Start. Attempt: {0}.", loop);
 
                     var eventQue = new EventQue(Log.Logger, config);
                     using (var mqttClient = new MQTTClient(config, eventQue, Log.Logger, _ct.Token))

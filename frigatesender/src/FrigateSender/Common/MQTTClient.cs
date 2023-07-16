@@ -31,7 +31,7 @@ namespace FrigateSender
 
             _MQTTClient.ApplicationMessageReceivedAsync += e =>
             {
-                _logger.Information($"Event received.");
+                _logger.Information("Event received.");
 
                 var payload = e.ApplicationMessage.PayloadSegment;
                 var payloadByteArray = payload.ToArray();
@@ -44,7 +44,7 @@ namespace FrigateSender
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error(ex, $"Failed to add event.");
+                    _logger.Error(ex, "Failed to add event.");
                 }
 
                 return Task.CompletedTask;
@@ -54,7 +54,7 @@ namespace FrigateSender
             // loop of trying to connect every one second untill success.
             _MQTTClient.DisconnectedAsync += async e =>
             {
-                _logger.Information($"MQTT Disconnected, Code: {e.Reason.ToString()}({(int)e.Reason}).");
+                _logger.Information("MQTT Disconnected, Code: {0}({1}).", e.Reason.ToString(), (int)e.Reason);
                 _logger.Information("Retrying connection in 2 seconds");
                 await Task.Delay(2000);
                 await Start(ct);
@@ -63,7 +63,7 @@ namespace FrigateSender
 
         public async Task Start(CancellationToken ct)
         {
-            _logger.Information($"Connecting to MQTT: {_configuration.MQTTAddress}:{_configuration.MQTTPort}");
+            _logger.Information("Connecting to MQTT: {0}:{1}", _configuration.MQTTAddress, _configuration.MQTTPort);
 
             var mqttClientOptions = new MqttClientOptionsBuilder()
                .WithTcpServer(_configuration.MQTTAddress, _configuration.MQTTPort)
@@ -73,11 +73,11 @@ namespace FrigateSender
             try
             {
                 var result = await _MQTTClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
-                _logger.Information($"Connection result code: {result.ResultCode.ToString()}({(int)result.ResultCode}).");
+                _logger.Information("Connection result code: {0}({1}).", result.ResultCode.ToString(), (int)result.ResultCode);
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, $"Failed to connect: " + ex.Message);
+                _logger.Error(ex, "Failed to connect: {0}.", ex.Message);
                 // this will cause DisconnectedAsync to trigger and retrying connection.
                 return;
             }
@@ -91,7 +91,7 @@ namespace FrigateSender
                 .Build();
 
             await _MQTTClient.SubscribeAsync(mqttSubscribeOptions, ct);
-            _logger.Information($"Subscribed to: {_configuration.MQTTTopic}");
+            _logger.Information("Subscribed to: {0}", _configuration.MQTTTopic);
         }
 
         public async void Dispose()

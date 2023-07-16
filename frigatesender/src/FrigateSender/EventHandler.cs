@@ -41,9 +41,9 @@ namespace FrigateSender
             var nextEvent = _eventQue.GetNext();
             if (nextEvent != null)
             {
-                _logger.Information($"--Start Eventhandling: {nextEvent.EventId} - {nextEvent.EventType} --");
+                _logger.Information("--Start Eventhandling: {0} - {1} --", nextEvent.EventId, nextEvent.EventType);
                 await HandledEvent(nextEvent, ct);
-                _logger.Information($"--Event handled: {nextEvent.EventId} --");
+                _logger.Information("--Event handled: {0} --", nextEvent.EventId);
             }
         }
 
@@ -59,7 +59,7 @@ namespace FrigateSender
             }
             else
             {
-                _logger.Error($"Unhandled event type in MessageHandler: {ev.EventType}");
+                _logger.Error("Unhandled event type in MessageHandler: {0}", ev.EventType);
             }
         }
 
@@ -117,7 +117,8 @@ namespace FrigateSender
                 if (filePath != null && File.Exists(filePath))
                     fileSize = (new FileInfo(filePath)).Length;
 
-                _logger.Information($"Download attempt {attempts}/{maxAttempts}, FileSize: {Math.Round(fileSize.ConvertBytesToMegabytes(), 2)}Mb, Path: {filePath}");
+                _logger.Information("Download attempt {0}/{1}, FileSize: {2}Mb, Path: {3}", 
+                    attempts, maxAttempts, Math.Round(fileSize.ConvertBytesToMegabytes(), 2), filePath);
             }
 
             return filePath;
@@ -131,7 +132,7 @@ namespace FrigateSender
                 var fileName = DateTime.Now.ToString("yyyyMMdd_HHmmss") + Guid.NewGuid().ToString().Replace("-", "") + fileType;
                 tempFile = Path.Join(_config.TemporaryFolder, fileName);
 
-                _logger.Information($"Downloading {tempFile} from: {fileURL}.");
+                _logger.Information("Downloading {0} from: {1}.", tempFile, fileURL);
 
                 using (var handler = new HttpClientHandler() { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator })
                 using (var client = new HttpClient(handler))
@@ -165,12 +166,12 @@ namespace FrigateSender
                     if(File.Exists(filePath))
                         File.Delete(filePath);
                     
-                    _logger.Information($"File deleted: {filePath}");
+                    _logger.Information("File deleted: {0}", filePath);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, $"Could not delete file: {filePath}.");
+                _logger.Error(ex, "Could not delete file: {0}.", filePath);
             }
         }
     }
