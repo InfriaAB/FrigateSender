@@ -41,7 +41,7 @@ namespace FrigateSender
             var nextEvent = _eventQue.GetNext();
             if (nextEvent != null)
             {
-                _logger.Information("--Start Eventhandling: {0} - {1} --", nextEvent.EventId, nextEvent.EventType);
+                _logger.Information("--Start Eventhandling: {0}, Type: {1} --", nextEvent.EventId, nextEvent.EventType);
                 await HandledEvent(nextEvent, ct);
                 _logger.Information("--Event handled: {0} --", nextEvent.EventId);
             }
