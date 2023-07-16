@@ -92,7 +92,6 @@ namespace FrigateSender
             string? filePath = TryGetFile(videoURL, ".mp4", 10, 1000, ct);
             if (filePath != null)
             {
-                //var message = $"id: {ev.EventId},";
                 var message = $"Video: {ev.ObjectType.FirstLetterToUpper()}({ev.Score}) in {ev.CameraName.FirstLetterToUpper()}, {ev.ReceivedDate.ToString("yyyy-MM-dd HH:mm:ss")}, id: {ev.EventId}.";
                 foreach (var sender in _senders)
                 {
