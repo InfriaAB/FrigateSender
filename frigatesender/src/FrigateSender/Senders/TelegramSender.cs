@@ -69,7 +69,7 @@ namespace FrigateSender.Senders
             foreach(var file in filesToSend)
             {
                 i++;
-                _logger.Debug("Sending file {0}/{1}.", i, filesToSend.Count());
+                _logger.Information("Sending file {0}/{1}.", i, filesToSend.Count());
                 var sendMessage = message + $" part: {i}/{filesToSend.Count}.";
                 using (FileStream fsSource = new FileStream(file, FileMode.Open, FileAccess.Read))
                 {
