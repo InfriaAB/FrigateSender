@@ -31,16 +31,16 @@ namespace FrigateSender
 
                         while (_ct.IsCancellationRequested == false)
                         {
-                            await Task.Delay(100, _ct.Token);
+                            await Task.Delay(200, _ct.Token);
                             await messageHandler.Work(_ct.Token);
                         }
                     }
                 }
                 catch (Exception e)
                 {
-                    Log.Logger.Error(e, "Crashed in Program.Main.");
+                    Log.Logger.Error(e, "Crashed in Program.Main. Attempt: {0}.", loop);
                     Log.Logger.Information("Should restart shortly.");
-                    await Task.Delay(200);
+                    await Task.Delay(1000);
                 }
             }
 
