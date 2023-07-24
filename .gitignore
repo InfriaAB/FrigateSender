@@ -197,3 +197,4 @@ cython_debug/
 /frigatesender/src/FrigateSender/Properties/PublishProfiles
 *.user
 
+/crashlogexamples
