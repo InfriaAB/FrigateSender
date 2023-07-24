@@ -1,0 +1,11 @@
+name: "FrigateSender"
+description: "Send snapshots and videos to messaging services without opening anything up to the internet."
+version: "1.0.0"
+slug: "frigate_sender"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
