@@ -1,4 +1,0 @@
-# https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
-name: Frigate-Sender
-url: 'https://github.com/InfriaAB/FrigateSender'
-maintainer: InfriaAB

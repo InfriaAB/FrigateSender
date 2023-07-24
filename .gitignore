@@ -198,6 +198,5 @@ cython_debug/
 *.user
 
 /crashlogexamples
-/src/FrigateSender/bin/Release/net7.0
-/src/.vs/FrigateSender
-/src/FrigateSender.Tests/bin/Release/net7.0
+**/bin/**
+**/.vs/**
