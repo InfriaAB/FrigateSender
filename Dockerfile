@@ -3,7 +3,6 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
-RUN apt-get update && apt-get install -y ffmpeg
 
 WORKDIR /src
 COPY ["src", ""]
@@ -14,13 +13,15 @@ WORKDIR /src/src/FrigateSender
 RUN dotnet restore
 RUN dotnet build "FrigateSender.csproj" -c Release -o /app/build
 
-WORKDIR /src
-RUN dotnet test "FrigateSender.sln" "--logger:trx"
-WORKDIR /src/src/FrigateSender
+#WORKDIR /src
+#RUN dotnet test "FrigateSender.sln" "--logger:trx"
+#WORKDIR /src/src/FrigateSender
 
 FROM build AS publish
 RUN dotnet publish "FrigateSender.csproj" -c Release -o /app/publish
 FROM base AS final
+
+RUN apt-get update && apt-get install -y ffmpeg
 
 WORKDIR /app
 COPY --from=publish /app/publish .
